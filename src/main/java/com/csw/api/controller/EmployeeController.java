@@ -138,11 +138,15 @@ public class EmployeeController {
 	 * 
 	 * 
 	 */
-	@GetMapping("/dateinschedule")
+	@GetMapping("/date")
 	@Transactional
-	public List<Employee> getDateDetails(@RequestBody DateInput dateOfDetails) {
+	public List<String> getDateDetails(@RequestBody DateInput dateOfDetails) {
 		List<Employee> listEmployees = employeeRepo.getDateExistingDetails(dateOfDetails.getDateOfDetails());
-		return listEmployees;
+		List<String> dateContain=new ArrayList<>();
+		for(Employee addEmp:listEmployees) {
+			dateContain.add(dateOfDetails.getDateOfDetails()+" time: "+addEmp.getSchedule().getTime()+" duration: "+addEmp.getSchedule().getDuration());
+		}
+		return dateContain;
 	}
 
 	/*
