@@ -5,65 +5,135 @@ Note: For Backend, you can use any choice of database.(I had  used H2 in memory 
 1) Create Schedule api which will accept employee id(emailAddress) and training period (it should support single Date, time and schedule Duration and multiple as well)
 
 Example 1:
-
+Case 1: Post employee data to make a New Employee entry
+URL:http://localhost:8080/employee/save Request method:POST
+Request Body in Postman:Raw Json
 {
-
-"employeeId": "1",
-
-"schedule": {
-
-"startDate": "01 Apr 2021",
-
-"endDate": "01 Apr 2021",
-
-"time": "10:00",
-
-"duration": "60", //minutes
-
-"repeat": false,
-
-"frequency": null
-
+    "employeeId":3040,
+	"employeeEmail":"xyz@gmail.com",
+    "schedule":
+        {
+            "schedId":1,
+            "startDate": "01 Apr 2021",
+            "endDate": "1 Apr 2021",
+            "time": "10:00",
+            "duration": "60",
+            "repeat": true,
+            "frequency": "Daily"
+        }
 }
-
 }
 
 Example 2:
-
 {
-
-"employeeId": "1",
-
-"schedule": {
-
-"startDate": "01 Apr 2021",
-
-"endDate": "10 Apr 2021",
-
-"time": "10:00",
-
-"duration": "60", //minutes
-
-"repeat": true,
-
-"frequency": "Weekdays" // ENUM should accept , Weekdays, Daily, Weekly, Monthly
-
+    "employeeId":3041,
+	    "employeeEmail":"abc@gmail.com",
+    "schedule":
+        {
+            "schedId":2,
+            "startDate": "01 Apr 2021",
+            "endDate": "1 Apr 2021",
+            "time": "10:00",
+            "duration": "60",
+            "repeat": true,
+            "frequency": "Daily"
+        }
 }
 
-} 
+Case 1:Post list of employee data to make a New Employee entry
+
+URL:http://localhost:8080/employee/saveall Request method:POST
+Request Body in Postman:Raw JSON
+[{
+    "employeeId":3040,
+	"employeeEmail":"xyz@gmail.com",
+    "schedule":
+        {
+            "schedId":1,
+            "startDate": "01 Apr 2021",
+            "endDate": "1 Apr 2021",
+            "time": "10:00",
+            "duration": "60",
+            "repeat": true,
+            "frequency": "Daily"
+        }
+},{
+    "employeeId":3041,
+	"employeeEmail":"xyz@gmail.com",
+    "schedule":
+        {
+            "schedId":1,
+            "startDate": "01 Apr 2021",
+            "endDate": "1 Apr 2021",
+            "time": "10:00",
+            "duration": "60",
+            "repeat": true,
+            "frequency": "Daily"
+        }
+},{
+    "employeeId":3041,
+	   "employeeEmail":"abc@gmail.com",
+    "schedule":
+        {
+            "schedId":2,
+            "startDate": "01 Apr 2021"    ,
+            "endDate": "1 Apr 2021",
+            "time": "10:00",
+            "duration": "60",
+            "repeat": true,
+            "frequency": "Daily"
+        }
+}
+]
 
 2) List Schedule(s) by Employeeid
+Case 2:Get one employee's details and all his schedules employee id
+URL:http://localhost:8080/employee/details/3041      Request method:GET
+Note:pathvariable 3041 is employeeId
 
 3) Modify schedule(s) by Employeeid - Update one or more schedules at the same time
-
+ Case 3:Modify and update one schedule by employee id
+ URL:http://localhost:8080/employee/update/3040
+ Note:pathvariable 3040 is employeeId
+ Request Body in Postman:Raw JSON
+ {
+            "schedId": 1,
+            "startDate": "31 Mar 2021",
+            "endDate": "31 Mar 2021",
+            "time": "10:00",
+            "duration": "60",
+            "repeat": true,
+            "frequency": "Daily"
+        }
+        
+ Case 3:Modify and update list of schedules for employee id
+ URL:http://localhost:8080/employee/updateall/3040    Request method:PUT
+ Note:pathvariable 3040 is employeeId
+ Request Body in Postman:Raw JSON
+ [{
+            "schedId": 1,
+            "startDate": "31 Mar 2021",
+            "endDate": "31 Mar 2021",
+            "time": "10:00",
+            "duration": "60",
+            "repeat": true,
+            "frequency": "Daily"
+        },
+        {
+            "schedId": 2,
+            "startDate": "31 Mar 2021",
+            "endDate": "31 Mar 2021",
+            "time": "10:00",
+            "duration": "60",
+            "repeat": true,
+            "frequency": "Daily"
+        }]
+        
 4) Cancel Schedule(s) by Employeeid - Cancel one or more schedules at the same time. Also handle cancelling a schedule on a given date 
 
-For example: if i have 2 schedule between 1st April 2021 and 1st May 2021 at 10 AM and another schedule from  1st April 2021 and 1st May 2021 at 5PM - I can 
-
-cancel the complete schedule from  1st April 2021 and 1st May 2021 at 10 AM
-cancel both the schedules for the full duration
-cancel any one schedule on a given date alone (if the employee busy on another work)
-cancel all schedules on a given date  (if the employee is sick or if its a public holiday)
+Case 4:Delete Schedule by employee id and schedule id    
+URL:http://localhost:8080/employee/delete/3040/1         Request method:DELETE
+Note:pathvariable 3040 is employeeId and 1 is schedId
 
 5) Get schedules by date - Should provide the list of schedules for a given date. Say if I have one appointment repeating daily for 30 mins, the current date alone should be listed.
 
@@ -71,4 +141,21 @@ For example, In the above example 2 scenario, if I ask for schedule for today ap
 
 If I want to get the schedules for 1st April 2021 - I should get 2 records - one for employee 1 and the other for employee 2. 
 
+ Case 5: Get Employee and Schedule Details of a particular date
+ URL:http://localhost:8080/employee/date      Request method : GET
+ Request Body in PostMan:Raw Json
  
+ {
+    "dateOfDetails":"01 Apr 2021"
+}
+ 
+ 
+ 
+General:
+
+Case 6:Get all details
+URL:http://localhost:8080/employee/all      Request method : GET
+
+
+Case 7:Delete all details
+URL:http://localhost:8080/employee/deleteall    Request method:DELETE
